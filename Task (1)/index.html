@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Survey Form - Quiz Website</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #d69e49; /* golden brown background similar to image */
+      font-family: Arial, sans-serif;
+    }
+    .survey-container {
+      background: white;
+      width: 350px;
+      margin: 4rem auto;
+      padding: 2rem 2.5rem;
+      box-shadow: 0 0 15px rgb(0 0 0 / 0.1);
+      border-radius: 4px;
+    }
+    h1 {
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin-bottom: 0.25rem;
+      text-align: center;
+    }
+    p.subtitle {
+      font-size: 0.875rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #555;
+    }
+    label {
+      font-size: 0.875rem;
+      margin-top: 1rem;
+      display: block;
+      margin-bottom: 0.25rem;
+      color: #333;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    select,
+    input[type="textarea"] {
+      width: 100%;
+      padding: 0.25rem 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      font-size: 0.875rem;
+      box-sizing: border-box;
+    }
+    input[type="checkbox"],
+    input[type="radio"] {
+      margin-right: 0.4rem;
+      transform: scale(1);
+      vertical-align: middle;
+    }
+    .checkbox-group,
+    .radio-group {
+      margin-top: 0.5rem;
+      margin-left: 0.5rem;
+      font-size: 0.875rem;
+    }
+    button {
+      background-color: #d69e49;
+      width: 100%;
+      margin-top: 1.75rem;
+      border: none;
+      border-radius: 10px;
+      padding: 0.5rem 0;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #b98436;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="survey-container" role="main" aria-label="User Stories Survey Form">
+      <h1>Survey Form</h1>
+      <p class="subtitle">User stories survey form</p>
+      <form id="surveyForm" aria-describedby="formInstructions" novalidate>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter Name" required aria-required="true" aria-describedby="nameHelp" />
+        <span id="nameHelp" class="sr-only">Enter your full name</span>
+
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" name="email" placeholder="Enter E-Mail" required aria-required="true" aria-describedby="emailHelp" />
+        <span id="emailHelp" class="sr-only">Enter your email address</span>
+
+        <label for="workExperience">Work Experience:</label>
+        <input type="number" min="0" id="workExperience" name="workExperience" placeholder="Enter Number" aria-describedby="workExpHelp" />
+        <span id="workExpHelp" class="sr-only">Enter your total years of work experience</span>
+
+        <label for="investComfort">Are you comfortable in investing in real estate on platform without first investigating properly</label>
+        <select id="investComfort" name="investComfort" aria-describedby="investComfortHelp">
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+        <span id="investComfortHelp" class="sr-only">Select Yes or No</span>
+
+        <label for="suggestions">Suggestions to build trusted platform</label>
+        <input type="text" id="suggestions" name="suggestions" placeholder="" aria-describedby="suggestionsHelp" />
+        <span id="suggestionsHelp" class="sr-only">Enter your suggestions to build a trusted platform</span>
+
+        <label>You are ready to invest in:</label>
+        <div class="checkbox-group" role="group" aria-labelledby="readyToInvestLabel">
+          <div><input type="checkbox" id="realEstate" name="investOptions" value="Real Estate" /> <label for="realEstate" class="inline">Real Estate</label></div>
+          <div><input type="checkbox" id="mutualFunds" name="investOptions" value="Mutual Funds" /> <label for="mutualFunds" class="inline">Mutual Funds</label></div>
+          <div><input type="checkbox" id="cryptoCurrency" name="investOptions" value="Crypto Currency" /> <label for="cryptoCurrency" class="inline">Crypto Currency</label></div>
+          <div><input type="checkbox" id="stocksBonds" name="investOptions" value="Stocks & Bonds" /> <label for="stocksBonds" class="inline">Stocks &amp; Bonds</label></div>
+        </div>
+
+        <label>Are you ready for further contact:</label>
+        <div class="radio-group" role="radiogroup" aria-labelledby="contactReadyLabel">
+          <div><input type="radio" id="contactYes" name="readyContact" value="Yes" /> <label for="contactYes">Yes</label></div>
+          <div><input type="radio" id="contactNo" name="readyContact" value="No" /> <label for="contactNo">No</label></div>
+        </div>
+
+        <button type="submit" aria-label="Submit survey form">Submit</button>
+      </form>
+    </section>
+  </main>
+  <script>
+    document.getElementById("surveyForm").addEventListener("submit", function(event){
+      event.preventDefault();
+      alert("Thank you for submitting the survey!");
+      this.reset();
+    });
+  </script>
+</body>
+</html>
+
