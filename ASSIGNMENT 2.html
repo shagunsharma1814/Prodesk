@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>registration form</title>
+    <style>
+        body {
+            font-family: arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background-color: #d0e2d0;
+            padding: 30px;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-container h2 {
+            text-align: center;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100% padding: 10px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .social-login ing {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .social-login img {
+            width: 30px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        .or-text {
+            text-align: center;
+            margin: 10px 0;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>create Account</h2>
+        <div class="social-login">
+            <img src="https://img.icons8.com/ios/color/48/000000/google-logo.png" alt="Google">
+            <img src="https://img.icons8.com/ios-filled/50/000000/facebook-new.png" alt="Facebook">
+        </div>
+        <div class="or-text">or use your email for registration</div>
+        <form>
+            <input type="text" placeholder="username" required>
+            <input type="email" placeholder="Email" required>
+            <input type="password" placeholder="password" required>
+            <button type="submit">sign up</button>
+        </form>
+    </div>
+</body>
+
+</html>
