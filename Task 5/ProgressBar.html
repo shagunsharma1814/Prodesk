@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Step Progress Bar</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+    /* Reset some */
+    body, html {
+      margin: 0; padding: 0; height: 100%;
+      font-family: 'Roboto', sans-serif;
+      background: #fff44f; /* bright yellow background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      user-select: none;
+      font-size: 14px;
+    }
+
+    .progress-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 52px;
+      margin-bottom: 40px;
+    }
+
+    /* Line between steps */
+    .progress-container::before {
+      content: "";
+      position: absolute;
+      top: 34px; /* centered vertically relative to circles */
+      left: 85px;
+      right: 85px;
+      height: 4px;
+      background: #c8c8c8;
+      z-index: 0;
+      border-radius: 2px;
+    }
+    /* Active line - will be expanded with js */
+    .progress-fill {
+      position: absolute;
+      top: 34px;
+      left: 85px;
+      height: 4px;
+      background: #067a33; /* deep green all steps done line color */
+      border-radius: 2px;
+      z-index: 1;
+      transition: width 0.4s ease;
+      width: 0;
+    }
+
+    /* Steps container as flex but relative for z layers */
+    .progress-wrapper {
+      position: relative;
+      width: 400px;
+    }
+
+    /* Step circles */
+    .step {
+      position: relative;
+      background: white;
+      border: 2.5px solid #c8c8c8;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: default;
+      transition: border-color 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .step.active {
+      border-color: #067a33;
+    }
+
+    .step.completed {
+      border-color: #067a33;
+      background: #32a852;
+    }
+
+    /* Icon container inside step */
+    .step svg {
+      width: 18px;
+      height: 18px;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Completed steps use white check mark */
+    .step.completed svg {
+      stroke: white;
+      fill: transparent;
+    }
+
+    /* Current active step circle is white with green border.
+       We show a green check mark for completed steps.
+       For incomplete steps: show a grey X */
+
+    /* X icon color - grey */
+    .step.incomplete svg {
+      stroke: #bbb;
+      fill: transparent;
+    }
+
+    /* Step text below each step */
+    .step-label {
+      margin-top: 8px;
+      text-align: center;
+      color: #333;
+      font-weight: 500;
+      user-select: none;
+      pointer-events: none;
+      font-size: 13px;
+      width: 70px;
+      position: relative;
+      left: -15px;
+    }
+
+    /* Align each label under step circle */
+    .step-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      width: 70px;
+    }
+
+    /* Buttons container */
+    .btn-container {
+      display: flex;
+      gap: 24px;
+    }
+
+    button {
+      background-color: #5c33a6;
+      border: none;
+      color: white;
+      font-size: 18px;
+      padding: 12px 18px;
+      border-radius: 6px;
+      box-shadow: 0 3px 8px rgb(92 51 166 / 0.7);
+      cursor: pointer;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+
+    button:disabled {
+      background-color: #9e8ecf;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    button:hover:not(:disabled) {
+      background-color: #3c1f72;
+      box-shadow: 0 5px 12px rgb(56 30 123 / 0.9);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="progress-wrapper" aria-label="Step progress bar">
+    <div class="progress-fill" id="progress-fill"></div>
+    <div class="progress-container" role="list">
+      <div class="step-wrapper" role="listitem">
+        <div class="step completed" id="step-0" aria-current="step" aria-label="Start step completed">
+          <!-- Check mark icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <div class="step-label">Start</div>
+      </div>
+
+      <div class="step-wrapper" role="listitem">
+        <div class="step completed" id="step-1" aria-label="Step 1 completed">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <div class="step-label">Step 1</div>
+      </div>
+
+      <div class="step-wrapper" role="listitem">
+        <div class="step incomplete" id="step-2" aria-label="Step 2 not completed">
+          <!-- X mark icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </div>
+        <div class="step-label">Step 2</div>
+      </div>
+
+      <div class="step-wrapper" role="listitem">
+        <div class="step incomplete" id="step-3" aria-label="Step 3 not completed">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </div>
+        <div class="step-label">Step 3</div>
+      </div>
+
+      <div class="step-wrapper" role="listitem">
+        <div class="step incomplete" id="step-4" aria-label="Step 4 not completed">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </div>
+        <div class="step-label">Step 4</div>
+      </div>
+    </div>
+  </div>
+  <div class="btn-container">
+    <button id="prev-btn" disabled aria-label="Go to previous step">←</button>
+    <button id="next-btn" aria-label="Go to next step">→</button>
+  </div>
+
+  <script>
+    (function(){
+      const steps = document.querySelectorAll(".step");
+      const progressFill = document.getElementById("progress-fill");
+      const prevBtn = document.getElementById("prev-btn");
+      const nextBtn = document.getElementById("next-btn");
+
+      let currentStep = 1; // Starting at Step 1 completed (index 1)
+
+      /**
+       * Update the progress bar UI based on currentStep index
+       * Steps: 0 to 4
+       */
+      function updateProgress() {
+        // Update button disabled states
+        prevBtn.disabled = currentStep === 0;
+        nextBtn.disabled = currentStep === steps.length - 1;
+
+        // Update steps classes and aria labels
+        steps.forEach((step, index) => {
+          if(index < currentStep) {
+            step.classList.add("completed");
+            step.classList.remove("active", "incomplete");
+            step.setAttribute("aria-label", `Step ${index} completed`);
+          } else if(index === currentStep) {
+            step.classList.add("active");
+            step.classList.remove("completed", "incomplete");
+            step.setAttribute("aria-current", "step");
+            step.setAttribute("aria-label", `Step ${index} current`);
+          } else {
+            step.classList.add("incomplete");
+            step.classList.remove("active", "completed");
+            step.removeAttribute("aria-current");
+            step.setAttribute("aria-label", `Step ${index} not completed`);
+          }
+        });
+
+        // Special labels for first two steps (0 and 1) to match text: "Start" and "Step 1"
+        // Also update aria-label to textual labels
+        const labels = ["Start", "Step 1", "Step 2", "Step 3", "Step 4"];
+        steps.forEach((step, index) => {
+          if(index <= currentStep){
+            step.setAttribute("aria-label", labels[index] + (index === currentStep ? ' current' : ' completed'));
+          } else {
+            step.setAttribute("aria-label", labels[index] + ' not completed');
+          }
+        });
+
+        // Progress fill width calculation: Total distance between first and last step circles minus radii
+        const totalSteps = steps.length - 1;
+        const fillPercent = (currentStep / totalSteps) * 100;
+        progressFill.style.width = fillPercent + "%";
+      }
+
+      prevBtn.addEventListener("click", () => {
+        if(currentStep > 0) {
+          currentStep--;
+          updateProgress();
+        }
+      });
+
+      nextBtn.addEventListener("click", () => {
+        if(currentStep < steps.length - 1) {
+          currentStep++;
+          updateProgress();
+        }
+      });
+
+      // Initialize progress bar UI on load
+      updateProgress();
+    })();
+  </script>
+</body>
+</html>
+
