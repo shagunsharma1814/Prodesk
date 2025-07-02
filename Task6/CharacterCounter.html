@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Real-time Character Counter</title>
+<style>
+  /* Background and container */
+  body {
+    margin: 0;
+    background-color: #db7f73;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .counter-container {
+    background-color: #dca7aa;
+    width: 350px;
+    padding: 20px 30px 30px 30px;
+    border-radius: 10px;
+    box-shadow: 3px 4px 6px #b86563;
+  }
+
+  /* Title */
+  h1 {
+    font-size: 20px;
+    margin: 0 0 15px 0;
+    color: #1a1a1a;
+  }
+
+  /* Textarea styling */
+  textarea {
+    width: 100%;
+    height: 100px;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-size: 14px;
+    padding: 5px 10px;
+    border: 1px solid #3a3a3a;
+    border-radius: 2px;
+    resize: none;
+    box-sizing: border-box;
+  }
+
+  /* Counter text */
+  .counts {
+    margin-top: 15px;
+    font-style: italic;
+    font-size: 14px;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+  }
+  .total {
+    color: #6a5acd; /* slateblue for total */
+  }
+  .remaining {
+    color: #cc7833; /* orange-brown for remaining */
+  }
+</style>
+</head>
+<body>
+  <div class="counter-container" role="region" aria-label="Real-time character counter text area">
+    <h1>Real-time Character Counter</h1>
+    <textarea id="text-input" maxlength="50" aria-describedby="char-count"></textarea>
+    <div class="counts" id="char-count">
+      <span>Total Characters: <span class="total" id="total">0</span></span>
+      <span>Remaining: <span class="remaining" id="remaining">50</span></span>
+    </div>
+  </div>
+
+<script>
+  const textInput = document.getElementById("text-input");
+  const totalCount = document.getElementById("total");
+  const remainingCount = document.getElementById("remaining");
+  const maxChars = 50;
+
+  textInput.addEventListener("input", () => {
+    const inputLength = textInput.value.length;
+    totalCount.textContent = inputLength;
+    remainingCount.textContent = maxChars - inputLength;
+  });
+</script>
+</body>
+</html>
+
