@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Video Player</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .video-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        .controls {
+            background: linear-gradient(0deg, rgba(15,23,42,1) 0%, rgba(15,23,42,0.9) 30%, rgba(15,23,42,0) 100%);
+            padding: 20px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            transition: opacity 0.3s ease;
+        }
+        .control-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .control-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        .control-btn:active {
+            transform: scale(0.95);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .refresh-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .refresh-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .video-placeholder {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background-color: #1e293b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <div class="header">
+            <h1 class="text-3xl font-bold mb-2">Modern Video Player</h1>
+            <p class="text-slate-400">Watch your favorite videos in style</p>
+        </div>
+
+        <div class="video-container">
+            <div class="video-placeholder">
+                <img src="https://placehold.co/800x450" alt="Video thumbnail placeholder showing abstract blue digital waves" />
+            </div>
+            <div class="controls">
+                <button id="playBtn" class="control-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                </button>
+                <button id="pauseBtn" class="control-btn" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="6" y="4" width="4" height="16"></rect>
+                        <rect x="14" y="4" width="4" height="16"></rect>
+                    </svg>
+                </button>
+            </div>
+            <button id="refreshBtn" class="refresh-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21.5 2v6h-6"></path>
+                    <path d="M21.34 15.57a10 10 0 1 1-.57-8.38"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const playBtn = document.getElementById('playBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const videoPlaceholder = document.querySelector('.video-placeholder');
+        
+        // Create video element
+        const video = document.createElement('video');
+        video.src = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+        video.controls = false;
+        video.style.width = '100%';
+        video.style.height = '100%';
+        
+        // Replace placeholder with video when play is clicked
+        playBtn.addEventListener('click', () => {
+            videoPlaceholder.innerHTML = '';
+            videoPlaceholder.appendChild(video);
+            video.play();
+            playBtn.style.display = 'none';
+            pauseBtn.style.display = 'flex';
+        });
+        
+        pauseBtn.addEventListener('click', () => {
+            video.pause();
+            pauseBtn.style.display = 'none';
+            playBtn.style.display = 'flex';
+        });
+        
+        // When video ends, show play button again
+        video.addEventListener('ended', () => {
+            pauseBtn.style.display = 'none';
+            playBtn.style.display = 'flex';
+        });
+        
+        // Refresh functionality
+        refreshBtn.addEventListener('click', () => {
+            location.reload();
+        });
+    </script>
+</body>
+</html>
