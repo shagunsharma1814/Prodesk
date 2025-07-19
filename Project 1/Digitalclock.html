@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Digital Clock</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
+      background: url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b62f9b69-b9cf-491d-b83d-06674fb58cce.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+    .overlay {
+      background: rgba(0,0,0,0.35);
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: brightness(0.75);
+    }
+    .digital-clock {
+      display: flex;
+      gap: 12px;
+      user-select: none;
+      text-align: center;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      font-size: 3rem;
+    }
+    .clock-section {
+      background: rgba(81, 70, 179, 0.85);
+      width: 100px;
+      padding: 18px 0;
+      border-radius: 6px;
+      box-shadow: 0 5px 15px rgb(81 70 179 / 0.55);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+    .clock-section span.time {
+      font-size: 3rem;
+      line-height: 1;
+      letter-spacing: 0.08em;
+    }
+    .clock-section span.label {
+      margin-top: 6px;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: #d1d5db;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .ampm {
+      background: #1f2937;
+      color: white;
+      font-weight: 600;
+      width: 60px;
+      border-radius: 4px;
+      padding: 18px 0;
+      box-shadow: 0 5px 15px rgb(31 41 55 / 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.6rem;
+      letter-spacing: 0.15em;
+      user-select: none;
+      align-self: flex-end;
+      margin-left: 12px;
+    }
+
+    @media (max-width: 480px) {
+      .digital-clock {
+        font-size: 1.8rem;
+        gap: 8px;
+      }
+      .clock-section {
+        width: 72px;
+        padding: 14px 0;
+        border-radius: 4px;
+      }
+      .clock-section span.time {
+        font-size: 1.8rem;
+      }
+      .clock-section span.label {
+        font-size: 0.6rem;
+        margin-top: 4px;
+      }
+      .ampm {
+        width: 44px;
+        padding: 14px 0;
+        font-size: 1.1rem;
+        margin-left: 8px;
+      }
+    }
+
+    .title {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      margin-bottom: 30px;
+      text-shadow: 0 0 6px rgb(81 70 179 / 0.7);
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <div class="title">DIGITAL CLOCK</div>
+    <div class="digital-clock" role="timer" aria-live="off" aria-atomic="true" aria-label="Current time">
+      <div class="clock-section" aria-label="Hours">
+        <span class="time" id="hours">00</span>
+        <span class="label">HOURS</span>
+      </div>
+      <div class="clock-section" aria-label="Minutes">
+        <span class="time" id="minutes">00</span>
+        <span class="label">MINUTES</span>
+      </div>
+      <div class="clock-section" aria-label="Seconds">
+        <span class="time" id="seconds">00</span>
+        <span class="label">SECONDS</span>
+      </div>
+      <div class="ampm" id="ampm" aria-label="AM or PM indicator">AM</div>
+    </div>
+  </div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // hour '0' should be '12'
+
+      const formattedHours = hours.toString().padStart(2, '0');
+      const formattedMinutes = minutes.toString().padStart(2, '0');
+      const formattedSeconds = seconds.toString().padStart(2, '0');
+
+      document.getElementById('hours').textContent = formattedHours;
+      document.getElementById('minutes').textContent = formattedMinutes;
+      document.getElementById('seconds').textContent = formattedSeconds;
+      document.getElementById('ampm').textContent = ampm;
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+</body>
+</html>
+
